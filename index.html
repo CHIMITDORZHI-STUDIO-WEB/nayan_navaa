@@ -611,6 +611,14 @@
                 min-height: auto;
                 padding: 110px 0 40px;
             }
+
+            .hero h1 {
+                font-size: clamp(1.8rem, 7vw, 2.8rem);
+            }
+
+            .ambient-blob {
+                display: none;
+            }
         }
 
         .hero-badge {
@@ -656,12 +664,14 @@
 
         .hero h1 {
             font-family: var(--font-display);
-            font-size: clamp(3rem, 6vw, 5.5rem);
+            font-size: clamp(2.2rem, 5vw, 5.5rem);
             font-weight: 400;
             line-height: 1.08;
             letter-spacing: -0.02em;
             color: var(--text-primary);
             margin-bottom: 28px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .hero h1 strong {
