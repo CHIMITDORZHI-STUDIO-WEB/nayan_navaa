@@ -874,6 +874,7 @@
             font-weight: 400;
             font-style: italic;
             background: linear-gradient(135deg, var(--gold-dark), var(--gold-main));
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             opacity: 0.8;
@@ -1278,6 +1279,7 @@
             font-style: italic;
             line-height: 1;
             background: linear-gradient(135deg, var(--gold-main), var(--gold-deep));
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 16px;
@@ -1675,6 +1677,114 @@
         }
 
         /* ============================================
+           COMPREHENSIVE MOBILE FIXES
+           ============================================ */
+        @media (max-width: 900px) {
+
+            /* Global text overflow prevention */
+            h1,
+            h2,
+            h3,
+            h4,
+            p,
+            li,
+            a,
+            span,
+            div {
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+            }
+
+            /* Dev section */
+            .dev-card {
+                padding: clamp(20px, 4vw, 40px);
+                border-radius: 24px;
+            }
+
+            .dev-feature h4 {
+                font-size: 1rem;
+            }
+
+            .dev-feature p {
+                font-size: 0.82rem;
+            }
+
+            .dev-feature-icon {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+            }
+
+            .dev-feature-icon .material-symbols-outlined {
+                font-size: 18px !important;
+            }
+
+            .dev-visual {
+                display: none;
+            }
+
+            /* Services section */
+            .service-card {
+                padding: 28px 20px;
+            }
+
+            .service-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .service-card p {
+                font-size: 0.85rem;
+            }
+
+            /* AI section */
+            .ai-card {
+                padding: 32px 20px;
+            }
+
+            .ai-card h3 {
+                font-size: 1.15rem;
+            }
+
+            .ai-card .material-symbols-outlined {
+                font-size: 36px;
+            }
+
+            /* Content Factory */
+            .cf-card {
+                border-radius: 24px;
+            }
+
+            .cf-left h2 {
+                font-size: 1.8rem;
+            }
+
+            /* Benefits */
+            .benefit-card {
+                padding: 36px 20px;
+            }
+
+            .benefit-card h3 {
+                font-size: 1.1rem;
+            }
+
+            /* Section headers */
+            .section-title {
+                font-size: clamp(1.5rem, 5vw, 2.2rem);
+            }
+
+            .section-desc {
+                font-size: 0.9rem;
+            }
+
+            /* Footer */
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+        }
+
+        /* ============================================
            FOOTER
            ============================================ */
         .footer {
@@ -1820,13 +1930,50 @@
 
 <body>
 
+    <!-- Circuit Board Background Pattern -->
+    <div class="circuit-bg"></div>
+    <style>
+        .circuit-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-color: var(--white-pure);
+            background-image:
+                /* Grid dots */
+                radial-gradient(var(--gold-lighter) 1.5px, transparent 1.5px),
+                /* Horizontal traces */
+                linear-gradient(to right, var(--gold-lighter) 1px, transparent 1px),
+                /* Vertical traces */
+                linear-gradient(to bottom, var(--gold-lighter) 1px, transparent 1px);
+            background-size:
+                40px 40px,
+                /* Dots spacing */
+                120px 100%,
+                /* Vertical lines spacing */
+                100% 120px;
+            /* Horizontal lines spacing */
+            opacity: 0.3;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Dark mode adjustment */
+        :root[data-theme="dark"] .circuit-bg {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            opacity: 0.2;
+        }
+    </style>
+
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
-
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
         <a href="#services" onclick="closeMobile()" data-i18n="nav_services">Услуги</a>
