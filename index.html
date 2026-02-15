@@ -810,7 +810,6 @@
 
             .hero-orb {
                 width: 140px;
-                height: 140px;
             }
 
             .hero-orb-inner {
@@ -834,7 +833,9 @@
         .hero-orb {
             position: relative;
             width: 380px;
-            height: 380px;
+            height: auto;
+            max-width: 90vw;
+            aspect-ratio: 1;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%, var(--gold-lighter), var(--gold-light) 60%, var(--gold-main) 100%);
             box-shadow:
