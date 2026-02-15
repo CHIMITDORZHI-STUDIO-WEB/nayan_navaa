@@ -1925,6 +1925,83 @@
         .parallax-wrap {
             will-change: transform;
         }
+
+        /* ============================================
+           COOKIE BANNER
+           ============================================ */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            background: var(--white-cream);
+            border-top: 1px solid var(--gold-lighter);
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+            padding: 20px 0;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cookie-banner.visible {
+            transform: translateY(0);
+        }
+
+        .cookie-banner-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 clamp(20px, 4vw, 48px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .cookie-banner-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .cookie-banner-text a {
+            color: var(--gold-main);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: color 0.3s;
+        }
+
+        .cookie-banner-text a:hover {
+            color: var(--green-glow);
+        }
+
+        .cookie-banner-btn {
+            background: var(--green-glow);
+            color: #fff;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 12px rgba(161, 202, 94, 0.3);
+        }
+
+        .cookie-banner-btn:hover {
+            background: var(--green-glow-dark);
+            box-shadow: 0 4px 20px rgba(161, 202, 94, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .cookie-banner-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+        }
     </style>
 </head>
 
@@ -2391,12 +2468,23 @@
             <div class="footer-bottom">
                 <p data-i18n="footer_copy">&copy; 2026 ИТ СТУДИЯ НАЯН НАВАА. Все права защищены</p>
                 <div class="footer-bottom-links">
-                    <a href="#" data-i18n="footer_privacy">Политика конфиденциальности</a>
-                    <a href="#">152-ФЗ</a>
+                    <a href="privacy-policy.html" data-i18n="footer_privacy">Политика конфиденциальности</a>
+                    <a href="privacy-policy.html">152-ФЗ</a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- ===================== COOKIE BANNER ===================== -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-banner-inner">
+            <p class="cookie-banner-text" data-i18n="cookie_text">
+                Мы используем файлы cookie, чтобы сайт работал лучше. Оставаясь с нами, вы соглашаетесь с
+                <a href="privacy-policy.html">Политикой конфиденциальности</a>.
+            </p>
+            <button class="cookie-banner-btn" id="cookieAccept" data-i18n="cookie_accept">Принять</button>
+        </div>
+    </div>
 
     <!-- ===================== JAVASCRIPT ===================== -->
     <script>
@@ -2604,7 +2692,9 @@
                 footer_cases: "Кейсы",
                 footer_careers: "Карьера",
                 footer_copy: "© 2026 ИТ СТУДИЯ НАЯН НАВАА. Все права защищены",
-                footer_privacy: "Политика конфиденциальности"
+                footer_privacy: "Политика конфиденциальности",
+                cookie_text: "Мы используем файлы cookie, чтобы сайт работал лучше. Оставаясь с нами, вы соглашаетесь с <a href=\"privacy-policy.html\">Политикой конфиденциальности</a>.",
+                cookie_accept: "Принять"
             },
             en: {
                 nav_services: "Services",
@@ -2680,7 +2770,9 @@
                 footer_cases: "Case Studies",
                 footer_careers: "Careers",
                 footer_copy: "© 2026 NAYAN NAVAA IT STUDIO. All rights reserved",
-                footer_privacy: "Privacy Policy"
+                footer_privacy: "Privacy Policy",
+                cookie_text: "We use cookies to improve your experience. By staying with us, you agree to our <a href=\"privacy-policy.html\">Privacy Policy</a>.",
+                cookie_accept: "Accept"
             },
             zh: {
                 nav_services: "服务",
@@ -2756,7 +2848,9 @@
                 footer_cases: "案例研究",
                 footer_careers: "招聘",
                 footer_copy: "© 2026 Наян Наваа IT工作室。保留所有权利",
-                footer_privacy: "隐私政策"
+                footer_privacy: "隐私政策",
+                cookie_text: "我们使用Cookie来改善您的体验。继续使用本网站即表示您同意我们的<a href=\"privacy-policy.html\">隐私政策</a>。",
+                cookie_accept: "接受"
             }
         };
 
@@ -2792,7 +2886,11 @@
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (t[key]) {
-                    el.textContent = t[key];
+                    if (key === 'cookie_text') {
+                        el.innerHTML = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
                 }
             });
 
@@ -2814,10 +2912,23 @@
             applyLang(lang);
         }
 
+        // --- Cookie Banner ---
+        function initCookieBanner() {
+            const banner = document.getElementById('cookieBanner');
+            const acceptBtn = document.getElementById('cookieAccept');
+            if (localStorage.getItem('nayan_cookies_accepted')) return;
+            setTimeout(() => banner.classList.add('visible'), 800);
+            acceptBtn.addEventListener('click', () => {
+                localStorage.setItem('nayan_cookies_accepted', '1');
+                banner.classList.remove('visible');
+            });
+        }
+
         // --- Initialize ---
         document.addEventListener('DOMContentLoaded', () => {
             applyTheme(currentTheme);
             applyLang(currentLang);
+            initCookieBanner();
         });
 
     </script>
